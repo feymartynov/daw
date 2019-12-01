@@ -1,10 +1,10 @@
 <template>
   <div class="ControlsPanel">
-    <button class="btn-control btn-record" :class="{'btn-active': false}" @click="onRecordClick">
+    <button class="btn-control btn-record" :class="{'btn-active': recording}" @click="onRecordClick">
       <font-awesome-icon icon="circle" />
     </button>
 
-    <button class="btn-control btn-play" :class="{'btn-active': false}" @click="onPlayClick">
+    <button class="btn-control btn-play" :class="{'btn-active': playing}" @click="onPlayClick">
       <font-awesome-icon icon="play" />
     </button>
 
@@ -23,30 +23,45 @@
 </template>
 
 <script lang="ts">
+import { v4 as uuid } from 'uuid';
 import { Component, Vue } from 'vue-property-decorator';
 import { faCircle, faPlay, faPlus, faStop } from '@fortawesome/free-solid-svg-icons';
+import { ArrangementState, Track } from '../store/modules/arrangement';
 
 @Component
 export default class ControlsPanel extends Vue {
+  recording: boolean = false
+  playing: boolean = false
+
   // TODO
-  formatTime(_value: number) {
+  formatTime(_value: number): string {
     return '0'
   }
 
-  // TODO
-  onRecordClick() {
+  onRecordClick(): void {
+    if (this.recording) {
+      this.recording = false;
+    } else if (this.playing) {
+      this.recording = true;
+    } else {
+      this.recording = true;
+      this.playing = true;
+    }
   }
 
-  // TODO
-  onPlayClick() {
+  onPlayClick(): void {
+    if (!this.playing) this.playing = true;
   }
 
-  // TODO
-  onStopClick() {
+  onStopClick(): void {
+    this.recording = false;
+    this.playing = false;
   }
 
-  // TODO
-  onAddTrackClick() {
+  onAddTrackClick(): void {
+    let trackNumber = this.$store.getters.tracks.length + 1;
+    let track = { id: uuid(), name: `Track ${trackNumber}` };
+    this.$store.dispatch('addTrack', track);
   }
 }
 </script>

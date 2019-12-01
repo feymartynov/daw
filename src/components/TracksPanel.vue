@@ -1,8 +1,8 @@
 <template>
   <div class="TracksPanel">
-    <ul className="tracks">
-      <li v-for="track in tracks" :key="track.getId()" @click="switchActiveTrack">
-        <Track :track="track" :active="track.getId() === this.activeTrackId" />
+    <ul class="tracks">
+      <li v-for="item in tracks" :key="item.track.id" @click="switchActiveTrack(item.track)">
+        <Track v-bind="item.track" :active="item.active" />
       </li>
     </ul>
   </div>
@@ -10,20 +10,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Track from './TracksPanel/Track.vue'
+import Track from './TracksPanel/Track.vue';
+import { TrackListItem } from '../store/modules/arrangement';
 
 @Component({
   components: {
     Track,
-  },
-  props: {
-    tracks: Array,
-    activeTrackId: Boolean,
   }
 })
 export default class TracksPanel extends Vue {
-  // TODO
-  switchActiveTrack() {
+  get tracks(): Array<TrackListItem> {
+    return this.$store.getters.tracks;
+  }
+
+  switchActiveTrack(track: Track): void {
+    this.$store.dispatch('switchActiveTrack', track);
   }
 }
 </script>

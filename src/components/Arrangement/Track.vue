@@ -1,8 +1,8 @@
 <template>
   <div class="Track" :class="{active}">
-    <ul className="clips">
-      <li v-for="clip in clips" :key="clip.getId()">
-        <Clip :clip="clip" />
+    <ul class="clips">
+      <li v-for="clip in clips" :key="clip.id">
+        <Clip v-bind="clip" />
       </li>
     </ul>
   </div>
@@ -13,6 +13,8 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   props: {
+    id: String,
+    name: String,
     active: Boolean,
     clips: Array, // TODO: move to state
   }

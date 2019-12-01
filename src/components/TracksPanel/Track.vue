@@ -1,6 +1,6 @@
 <template>
   <div class="Track" :class="{active}">
-    <div className="name">{{ name }}</div>
+    <div class="name">{{ name }}</div>
   </div>
 </template>
 
@@ -9,6 +9,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   props: {
+    id: String,
     name: String,
     active: Boolean,
   }
